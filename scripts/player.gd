@@ -19,7 +19,7 @@ func _physics_process(_delta: float) -> void:
 		velocity += Vector3.UP
 	if Input.is_action_pressed("descend"):
 		velocity += Vector3.DOWN
-	velocity = velocity.normalized() * 50.0
+	velocity = velocity.normalized() * 100.0
 	# rotate the velocity vector to be relative to the player's current orientation
 	velocity = transform.basis * velocity
 	apply_central_force(velocity)
@@ -32,6 +32,6 @@ func _ready() -> void:
 
 func _on_mouse_motion(event: InputEventMouseMotion) -> void:
 	# the camera is static, relative to the player, so we only rotate the player, not the camera
-	var rotation_speed = 0.005
+	var rotation_speed = 0.01
 	print("Mouse motion: ", event.relative)
 	apply_torque_impulse(Vector3.UP * -event.relative.x * rotation_speed)
