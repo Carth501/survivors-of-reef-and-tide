@@ -16,12 +16,12 @@ func _physics_process(_delta: float) -> void:
 	if Input.is_action_pressed("right"):
 		velocity += Vector3.RIGHT
 	if Input.is_action_pressed("ascend"):
-		velocity += Vector3.DOWN
-	if Input.is_action_pressed("descend"):
 		velocity += Vector3.UP
+	if Input.is_action_pressed("descend"):
+		velocity += Vector3.DOWN
 	velocity = velocity.normalized() * 50.0
 	# rotate the velocity vector to be relative to the player's current orientation
-	velocity = transform.basis * -velocity
+	velocity = transform.basis * velocity
 	apply_central_force(velocity)
 	velocity = Vector3.ZERO
 	# always try to stay upright. Apply a torque to counteract any rotation around the X and Z axes
