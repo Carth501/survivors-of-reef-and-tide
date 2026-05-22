@@ -33,5 +33,4 @@ func _ready() -> void:
 func _on_mouse_motion(event: InputEventMouseMotion) -> void:
 	# the camera is static, relative to the player, so we only rotate the player, not the camera
 	var rotation_speed = 0.01
-	print("Mouse motion: ", event.relative)
 	apply_torque_impulse(Vector3.UP * -event.relative.x * rotation_speed)
