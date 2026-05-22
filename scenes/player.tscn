@@ -10,7 +10,7 @@
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 gravity_scale = 0.0
-linear_damp = 7.962
+linear_damp = 4.0
 angular_damp = 18.25
 script = ExtResource("1_3vyb7")
 
