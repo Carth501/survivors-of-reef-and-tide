@@ -15,6 +15,10 @@ run/main_scene="uid://5a8qwsfj325a"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+OceanService="res://scripts/services/OceanService.gd"
+
 [input]
 
 forward={

@@ -2,6 +2,61 @@
 
 [ext_resource type="MeshLibrary" uid="uid://dm1s8j8d0bd5y" path="res://gridmap_assets/SeafloorMeshLibrary.tres" id="1_nnsk1"]
 [ext_resource type="PackedScene" uid="uid://c51n37jsuo24m" path="res://scenes/player.tscn" id="2_rwgxs"]
+[ext_resource type="Script" uid="uid://bcj7ga8ynvano" path="res://scripts/OceanManager.gd" id="3_6p6f3"]
+[ext_resource type="Shader" uid="uid://ehlyy4tlrsr1" path="res://materials/ocean_surface.gdshader" id="4_4ag23"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jshgm"]
+sky_top_color = Color(0.0470588, 0.227451, 0.368627, 1)
+sky_horizon_color = Color(0.368627, 0.580392, 0.698039, 1)
+ground_bottom_color = Color(0.0235294, 0.109804, 0.188235, 1)
+ground_horizon_color = Color(0.180392, 0.345098, 0.470588, 1)
+ground_curve = 0.16
+
+[sub_resource type="Sky" id="Sky_q6l3v"]
+sky_material = SubResource("ProceduralSkyMaterial_jshgm")
+
+[sub_resource type="Environment" id="Environment_1qo7q"]
+background_mode = 2
+sky = SubResource("Sky_q6l3v")
+ambient_light_source = 3
+ambient_light_color = Color(0.55, 0.55, 0.55, 1)
+ambient_light_sky_contribution = 0.3
+tonemap_mode = 3
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_sycb7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0jov3"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("4_4ag23")
+shader_parameter/base_height = -4.0
+shader_parameter/enable_waves = false
+shader_parameter/wave_time = 0.0
+shader_parameter/wave_a_direction = Vector2(1, 0.35)
+shader_parameter/wave_a_amplitude = 0.35
+shader_parameter/wave_a_frequency = 0.08
+shader_parameter/wave_a_speed = 0.7
+shader_parameter/wave_b_direction = Vector2(-0.55, 1)
+shader_parameter/wave_b_amplitude = 0.2
+shader_parameter/wave_b_frequency = 0.13
+shader_parameter/wave_b_speed = 1.05
+shader_parameter/wave_c_direction = Vector2(0.8, -0.45)
+shader_parameter/wave_c_amplitude = 0.12
+shader_parameter/wave_c_frequency = 0.19
+shader_parameter/wave_c_speed = 1.45
+shader_parameter/shallow_color = Color(0.12, 0.48, 0.58, 0.7)
+shader_parameter/deep_color = Color(0.03, 0.16, 0.23, 0.82)
+shader_parameter/underside_color = Color(0.05, 0.23, 0.28, 0.9)
+shader_parameter/camera_underwater = false
+shader_parameter/camera_height = 0.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_04v7t"]
+size = Vector2(256, 256)
+subdivide_width = 48
+subdivide_depth = 48
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_csb14"]
+size = Vector3(256, 256, 256)
 
 [node name="Node3D" type="Node3D" unique_id=1315938632]
 
@@ -17,3 +72,26 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11, -10.33, -0.68)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=296250251]
 transform = Transform3D(0.7936145, -0.19479898, 0.57639354, -0.52099484, 0.27170017, 0.8091623, -0.31423017, -0.9424608, 0.11413592, 0, 7.307847, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=915826774]
+environment = SubResource("Environment_1qo7q")
+camera_attributes = SubResource("CameraAttributesPractical_sycb7")
+
+[node name="OceanManager" type="Node3D" parent="." unique_id=496697688]
+script = ExtResource("3_6p6f3")
+
+[node name="WaterSurface" type="MeshInstance3D" parent="OceanManager" unique_id=1336532804]
+material_override = SubResource("ShaderMaterial_0jov3")
+mesh = SubResource("PlaneMesh_04v7t")
+
+[node name="WaterArea" type="Area3D" parent="OceanManager" unique_id=1802578113]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+gravity_space_override = 3
+gravity = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OceanManager/WaterArea" unique_id=1104595266]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -128, 0)
+shape = SubResource("BoxShape3D_csb14")
